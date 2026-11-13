@@ -4,6 +4,8 @@ Playable reconstruction of the J2ME game
 `Miami Nights - Singles in The City` (Samsung S8000 480x800).
 This folder alone is all you need to build and run.
 
+![gameplay](screenshot.png)
+
 ## Requirements
 
 - .NET 8 SDK
