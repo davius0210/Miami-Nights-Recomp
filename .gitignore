@@ -1,6 +1,7 @@
 # === Gameloft original assets — NEVER commit (DMCA risk) ===
 # Extracted game resources (byte-identical originals)
-res/
+res/*
+!res/soundfont/
 *.jar
 *.jad
 *.sis

@@ -9,6 +9,7 @@ This folder alone is all you need to build and run.
 ## Requirements
 
 - .NET 8 SDK
+- Git LFS (the MIDI SoundFont below is stored via LFS)
 - Your own original `.jar` (not included in the repo)
 
 ## Run
@@ -22,8 +23,24 @@ dotnet run
 ```
 
 `res/` is loaded by path, exactly like `getResourceAsStream` did
-(`Midp.ResPath`). Do not commit `res/`, `*.jar`, `shot_f12.png`,
-or `crash.log`.
+(`Midp.ResPath`). Do not commit `res/` (exception: `res/soundfont/`),
+`*.jar`, `shot_f12.png`, or `crash.log`.
+
+## Audio (MIDI)
+
+The original used the phone's MMAPI synth, which MonoGame doesn't have.
+Music therefore renders in one of two ways:
+
+- **With SoundFont (default, recommended):** `res/soundfont/SGM-V2.01.sf2`
+  is loaded through MeltySynth — real General MIDI instrument samples,
+  so songs sound much closer to the original (correct instruments,
+  structure, tempo and loop counts). Override with
+  `MN_SOUNDFONT=<path to .sf2>`.
+- **Without SoundFont:** falls back to a built-in SMF soft-synth
+  (square/noise waves). Melody, tempo and loops are preserved,
+  but timbre is clearly "chiptune" instead of the original instruments.
+
+WAV sound effects always play through `SoundEffect` directly.
 
 ## Controls
 
@@ -51,7 +68,8 @@ NpcAi.cs               # needs-driven NPC AI (optional, off original path)
 StatsPanel.cs          # Sims-style player stats panel
 Engine/                # Midp, Display, Rms, Audio, Collision, SvgMap,
                        # JavaRandom, Shims, Helpers, SimpleFont
-res/                   # LOCAL, extracted from YOUR jar (git-ignored)
+res/                   # LOCAL, extracted from YOUR jar (git-ignored,
+                       # except res/soundfont/ which ships via Git LFS)
 art/                   # SVG sources (menu, bedroom)
 tools/                 # extract_res.py, fixers, midi_probe.py, ...
 ```
@@ -61,7 +79,8 @@ Line-by-line port of the validated decompiles (`namespace MiamiNights`,
 
 ## Limitations
 
-- MIDI timbre is a soft-synth approximation (structure/tempo/loops kept).
+- Without the SoundFont, MIDI timbre is a soft-synth approximation
+  (structure/tempo/loops kept) — see Audio above.
 - System font fallback is font8x8 (game text uses its own archives).
 - `vibrate()` is a no-op, locale defaults to English.
 - Occasional silent exit after minutes of play (no managed stack;
